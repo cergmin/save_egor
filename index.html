@@ -1,0 +1,87 @@
+<html>
+
+<head>
+    <title>Please, save Egor</title>
+    <link rel="stylesheet" href="./resources/styles.css">
+</head>
+
+<body>
+    <div class="background" style="top: 0vh; left: -2vw;"></div>
+    <div class="screen">
+        <div class="egor" style="top: 0px; left: 0px;"></div>
+        <div class="enemy right"></div>
+    </div>
+    <script src="resources/jquery.min.js"></script>
+    <script>
+        let fps = 60;
+        let egor_speed = 550;
+        let min_x = 10;
+        let max_x = $(document).width() - 100;
+        let min_y = -10;
+        let max_y = $(document).height() - 130;
+
+        let egor_x = ($(document).width() - $(".egor").width()) / 2;
+        let egor_y = 0;
+        let egor_x_delta = 0;
+        let egor_y_delta = 0;
+
+        $(document).on('keydown', function(e) {
+            if (e.which == 38) {
+                egor_y_delta = -1;
+            } else if (e.which == 40) {
+                egor_y_delta = 1;
+            } else if (e.which == 37) {
+                egor_x_delta = -1;
+            } else if (e.which == 39) {
+                egor_x_delta = 1;
+            }
+        });
+
+        $(document).on('keyup', function(e) {
+            if ((e.which == 38 && egor_y_delta < 0) ||
+                (e.which == 40 && egor_y_delta > 0)) {
+                egor_y_delta = 0;
+            }
+
+            if ((e.which == 37 && egor_x_delta < 0) ||
+                (e.which == 39 && egor_x_delta > 0)) {
+                egor_x_delta = 0;
+            }
+        });
+
+        setInterval(function() {
+            if (egor_x_delta != 0 && egor_y_delta != 0) {
+                if ((egor_x_delta < 0 && egor_x > min_x) || (egor_x_delta > 0 && egor_x < max_x)) {
+                    egor_x += egor_x_delta * egor_speed / fps / Math.sqrt(2);
+                }
+                if ((egor_y_delta < 0 && egor_y > min_y) || (egor_y_delta > 0 && egor_y < max_y)) {
+                    egor_y += egor_y_delta * egor_speed / fps / Math.sqrt(2);
+                }
+            } else {
+                if ((egor_x_delta < 0 && egor_x > min_x) || (egor_x_delta > 0 && egor_x < max_x)) {
+                    egor_x += egor_x_delta * egor_speed / fps;
+                }
+                if ((egor_y_delta < 0 && egor_y > min_y) || (egor_y_delta > 0 && egor_y < max_y)) {
+                    egor_y += egor_y_delta * egor_speed / fps;
+                }
+            }
+
+            $(".egor").attr("style", "top: " + egor_y + "px; left: " + egor_x + "px;");
+            if (egor_x_delta < 0) {
+                $(".egor").attr("class", "egor left");
+            } else if (egor_x_delta > 0) {
+                $(".egor").attr("class", "egor right");
+            } else if (egor_y_delta > 0) {
+                $(".egor").attr("class", "egor down");
+            } else if (egor_y_delta < 0) {
+                $(".egor").attr("class", "egor up");
+            } else {
+                $(".egor").attr("class", "egor");
+            }
+
+            $(".background").attr("style", "top: " + (((max_y - egor_y) / max_y - 1) * 4) + "vh; left: " + (((max_x - egor_x) / max_x - 1) * 4) + "vw;")
+        }, 1000 / fps);
+    </script>
+</body>
+
+</html>
