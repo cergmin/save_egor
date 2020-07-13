@@ -66,6 +66,7 @@
 
         let name = '';
         let score = 0;
+        let event = 0;
         let egor_speed = egor_start_speed;
         let egor_x = ($(document).width() - $(".egor").width()) / 2;
         let egor_y = 0;
@@ -177,6 +178,26 @@
         reloadRankTable();
         setInterval(reloadRankTable, 5000);
 
+        function run_random_event() {
+            event = 1;
+            if (event == 1) {
+                let hole_h = Math.round(Math.random() * $(window).height());
+                let side = Math.round(Math.random());
+                for (let h = -100; h < $(window).height(); h += 100) {
+                    if (h > (hole_h - 150) && h < (hole_h + 150)) {
+                        continue;
+                    }
+                    addEnemy(
+                        ['foxford', 'lizobakt', 'foxford', 'srja', 'lizobakt', 'srja'][Math.floor(Math.random() * 6)],
+                        h,
+                        side,
+                        0,
+                        h,
+                        300);
+                }
+            }
+        }
+
         $(".start_btn").on('click', start);
 
         function start() {
@@ -280,6 +301,9 @@
 
                     score++;
                     $('.score').html(score);
+                    if (score % 15 == 0) {
+                        run_random_event();
+                    }
                 }
                 // $('.score').html(score + " (" + $(".screen > .enemy").length + ")");
             }, 400 - Math.min(300, score * 5));
