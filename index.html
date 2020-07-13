@@ -2,7 +2,6 @@
 
 <head>
     <title>Please, save Egor</title>
-    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="./resources/styles.css">
 </head>
 
@@ -15,8 +14,9 @@
     <script src="resources/jquery.min.js"></script>
     <script>
         let fps = 60;
-        let max_enemy_amount = 10;
-        let egor_speed = 550;
+        let max_enemy_amount = 15;
+        let egor_start_speed = 550;
+        let enemy_start_speed = 200;
         let min_x = 10;
         let max_x = $(document).width() - 100;
         let min_y = -10;
@@ -43,6 +43,7 @@
         ];
 
         let score = 0;
+        let egor_speed = egor_start_speed;
         let egor_x = ($(document).width() - $(".egor").width()) / 2;
         let egor_y = 0;
         let egor_x_delta = 0;
@@ -93,13 +94,28 @@
             let rotation = Math.atan2(-y, -x);
             rotation = rotation * 180 / Math.PI;
 
-            console.log(rotation);
-
             $(".screen").append('<div class="enemy ' + name + '" style="' +
                 'transform: rotate(' + rotation + 'deg)' + (side < 0 ? ' scaleY(-1)' : '') + ';' +
                 'top:' + height + 'px;' +
                 'left:' + side + 'px;' +
                 '" speedx="' + x + '" speedy="' + y + '"></div>')
+        }
+
+        function addScore(name, score) {
+            $.getJSON('https://json.geoiplookup.io/api?callback=?', function(data_with_ip) {
+                $.ajax({
+                    url: "http://cergmin.pythonanywhere.com/add",
+                    method: 'POST',
+                    data: {
+                        'name': name,
+                        'ip': data_with_ip.ip,
+                        'score': score
+                    },
+                    success: function(data) {
+                        alert(data);
+                    }
+                });
+            });
         }
 
         setInterval(function() {
@@ -154,13 +170,15 @@
                     ['foxford', 'lizobakt', 'foxford', 'srja', 'lizobakt', 'srja'][Math.floor(Math.random() * 6)],
                     Math.round(Math.random() * $(window).height()),
                     Math.round(Math.random()),
-                    egor_x,
-                    egor_y,
-                    200);
+                    egor_x + Math.random() * 500 - 250,
+                    egor_y + Math.random() * 500 - 250,
+                    enemy_start_speed + score * 2);
+                egor_speed = egor_start_speed + score;
 
                 score++;
                 $('.score').html(score);
             }
+            // $('.score').html(score + " (" + $(".screen > .enemy").length + ")");
         }, 500);
     </script>
 </body>

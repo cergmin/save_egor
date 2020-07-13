@@ -1,3 +1,8 @@
+@font-face {
+    font-family: "Press Start 2P";
+    src: url(./fonts/PressStart2P.ttf) format("truetype");
+}
+
 @keyframes egor_up {
     0% {
         background-image: url('./images/egor_up.png');
@@ -100,9 +105,10 @@
     font-family: 'Press Start 2P', cursive;
     font-size: 5em;
     text-align: center;
-    text-shadow: 2px 2px 0px #00a, 4px 4px 0px #005, 6px 6px 0px #000;
+    text-shadow: 1px 1px 0px #00e, 2px 2px 0px #00c, 3px 3px 0px #009, 4px 4px 0px #006, 5px 5px 0px #003, 6px 6px 0px #000;
     position: absolute;
     z-index: 100;
+    user-select: none;
 }
 
 .egor {
