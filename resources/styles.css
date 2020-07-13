@@ -138,10 +138,6 @@
     position: absolute;
 }
 
-.enemy.right {
-    transform: scaleX(-1);
-}
-
 .enemy.foxford {
     animation-name: foxford;
     background-image: url('./images/lizaw1.png');

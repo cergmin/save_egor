@@ -13,6 +13,7 @@
     <script src="resources/jquery.min.js"></script>
     <script>
         let fps = 60;
+        let max_enemy_amount = 10;
         let egor_speed = 550;
         let min_x = 10;
         let max_x = $(document).width() - 100;
@@ -86,7 +87,13 @@
             x = (x - side) / dist * speed;
             y = (y - height) / dist * speed;
 
-            $(".screen").append('<div class="enemy ' + name + ' ' + (side < 0 ? 'right' : '') + '" style="' +
+            let rotation = Math.atan2(-y, -x);
+            rotation = rotation * 180 / Math.PI;
+
+            console.log(rotation);
+
+            $(".screen").append('<div class="enemy ' + name + '" style="' +
+                'transform: rotate(' + rotation + 'deg)' + (side < 0 ? ' scaleY(-1)' : '') + ';' +
                 'top:' + height + 'px;' +
                 'left:' + side + 'px;' +
                 '" speedx="' + x + '" speedy="' + y + '"></div>')
@@ -132,15 +139,23 @@
                     i--;
                     continue;
                 }
-                obj.attr("style", 'top:' + top + 'px;' + 'left:' + left + 'px;');
+                obj.attr("style", 'transform: ' + obj.css('transform') + ';top:' + top + 'px;' + 'left:' + left + 'px;');
             }
 
             $(".background").attr("style", "top: " + (((max_y - egor_y) / max_y - 1) * 4) + "vh; left: " + (((max_x - egor_x) / max_x - 1) * 4) + "vw;")
         }, 1000 / fps);
 
         setInterval(function() {
-            addEnemy(['foxford', 'lizobakt', 'srja', 'foxford', 'lizobakt', 'srja'][Math.floor(Math.random() * 6)], Math.round(Math.random() * $(window).height()), Math.round(Math.random()), egor_x, egor_y, 200);
-        }, 1000);
+            if ($(".screen > .enemy").length < max_enemy_amount) {
+                addEnemy(
+                    ['foxford', 'lizobakt', 'foxford', 'srja', 'lizobakt', 'srja'][Math.floor(Math.random() * 6)],
+                    Math.round(Math.random() * $(window).height()),
+                    Math.round(Math.random()),
+                    egor_x,
+                    egor_y,
+                    200);
+            }
+        }, 500);
     </script>
 </body>
 
