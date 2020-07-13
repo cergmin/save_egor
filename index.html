@@ -15,75 +15,15 @@
                     <td>Имя</td>
                     <td>Очки</td>
                 </tr>
-                <tr>
-                    <td>1</td>
-                    <td>cergmin</td>
-                    <td>300</td>
-                </tr>
-                <tr>
-                    <td>2</td>
-                    <td>cergmin</td>
-                    <td>300</td>
-                </tr>
-                <tr>
-                    <td>3</td>
-                    <td>cergmin</td>
-                    <td>300</td>
-                </tr>
-                <tr>
-                    <td>4</td>
-                    <td>cergmin</td>
-                    <td>300</td>
-                </tr>
-                <tr>
-                    <td>5</td>
-                    <td>cergmin</td>
-                    <td>300</td>
-                </tr>
-                <tr>
-                    <td>6</td>
-                    <td>cergmin</td>
-                    <td>300</td>
-                </tr>
-                <tr>
-                    <td>7</td>
-                    <td>cergmin</td>
-                    <td>300</td>
-                </tr>
-                <tr>
-                    <td>8</td>
-                    <td>cergmin</td>
-                    <td>300</td>
-                </tr>
-                <tr>
-                    <td>9</td>
-                    <td>cergmin</td>
-                    <td>300</td>
-                </tr>
-                <tr>
-                    <td>10</td>
-                    <td>cergmin</td>
-                    <td>300</td>
-                </tr>
-                <tr>
-                    <td>...</td>
-                    <td>...</td>
-                    <td>...</td>
-                </tr>
-                <tr style="background-color: #cd4040;">
-                    <td>28</td>
-                    <td>you</td>
-                    <td>2</td>
-                </tr>
             </table>
         </div>
         <div class="input_area">
-            <h1>Спаси Егорку!</h1>
-            <input class="name" type="text" placeholder="Имя">
+            <h1 class="input_area_title">Спаси Егорку!</h1>
+            <input class="name" type="text" placeholder="Имя" maxlength="60">
             <div class="start_btn">Начать</div>
         </div>
     </div>
-    <div class="screen game" style="display: none;">
+    <div class="screen game hide">
         <h1 class="score">0</h1>
         <div class="egor" style="top: 0px; left: 0px;"></div>
     </div>
@@ -118,12 +58,15 @@
             './resources/images/serg4.png',
         ];
 
+        let name = '';
         let score = 0;
         let egor_speed = egor_start_speed;
         let egor_x = ($(document).width() - $(".egor").width()) / 2;
         let egor_y = 0;
         let egor_x_delta = 0;
         let egor_y_delta = 0;
+
+        let main_interval, enemy_interval;
 
         $(window).on('load', function() {
             preload.forEach(function(resource) {
@@ -180,22 +123,91 @@
         function addScore(name, score) {
             $.getJSON('https://json.geoiplookup.io/api?callback=?', function(data_with_ip) {
                 $.ajax({
-                    url: "https://cergmin.pythonanywhere.com/add",
-                    method: 'POST',
-                    data: {
-                        'name': name,
-                        'ip': data_with_ip.ip,
-                        'score': score
-                    },
+                    url: "https://cergmin.pythonanywhere.com/add/" +
+                        name + "/" + data_with_ip.ip + "/" + score,
                     success: function(data) {
-                        alert(data);
+                        data = JSON.parse(data);
+                        console.log(data);
                     }
                 });
             });
         }
 
+        function reloadRankTable() {
+            $.ajax({
+                url: "https://cergmin.pythonanywhere.com",
+                success: function(data) {
+                    data = JSON.parse(data);
+                    $(".ranks").html('<tr style="background-color: #fff; color: #000; font-weight: bold;"><td>#</td><td>Имя</td><td>Очки</td></tr>');
+
+                    let flag = true;
+
+                    data.forEach(function(item, i) {
+
+                        if (item['name'] == name) {
+                            flag = false;
+                            $(".ranks").append('<tr style="background-color: #cd4040;">' +
+                                '<td>' + (i + 1) + '</td>' +
+                                '<td>' + item['name'] + '</td>' +
+                                '<td>' + item['score'] + '</td></tr>');
+                        } else {
+                            $(".ranks").append('<tr>' +
+                                '<td>' + (i + 1) + '</td>' +
+                                '<td>' + item['name'] + '</td>' +
+                                '<td>' + item['score'] + '</td></tr>');
+                        }
+                    });
+
+                    if (flag && name != '') {
+                        $('.ranks').append('<tr><td>...</td><td>...</td><td>...</td></tr><tr style="background-color: #cd4040;">' +
+                            '<td>99</td>' +
+                            '<td>' + name + '</td>' +
+                            '<td>' + score + '</td></tr>');
+                    }
+                }
+            });
+        }
+        reloadRankTable();
+        setInterval(reloadRankTable, 5000);
+
+        $(".start_btn").on('click', start);
+
         function start() {
-            setInterval(function() {
+            if ($(".name").val().length > 0) {
+                $.getJSON('https://json.geoiplookup.io/api?callback=?', function(data_with_ip) {
+                    $.ajax({
+                        url: "https://cergmin.pythonanywhere.com/get_ip/" + $(".name").val(),
+                        success: function(data) {
+                            if (data == data_with_ip.ip || data == '') {
+                                name = $(".name").val();
+
+                                $(".screen.menu").addClass('hide');
+                                $(".screen.game").removeClass('hide');
+
+                                run_game();
+                            } else {
+                                $(".input_area_title").html("Имя занято");
+                            }
+                        }
+                    });
+                });
+            } else {
+                $(".input_area_title").html("Введите имя");
+            }
+        }
+
+        function run_game() {
+            score = 0;
+            egor_speed = egor_start_speed;
+            egor_x = ($(document).width() - $(".egor").width()) / 2;
+            egor_y = 0;
+            egor_x_delta = 0;
+            egor_y_delta = 0;
+
+            $(".score").html('0');
+
+            reloadRankTable();
+            main_interval = setInterval(function() {
                 if (egor_x_delta != 0 && egor_y_delta != 0) {
                     if ((egor_x_delta < 0 && egor_x > min_x) || (egor_x_delta > 0 && egor_x < max_x)) {
                         egor_x += egor_x_delta * egor_speed / fps / Math.sqrt(2);
@@ -236,12 +248,16 @@
                         continue;
                     }
                     obj.attr("style", 'transform: ' + obj.css('transform') + ';top:' + top + 'px;' + 'left:' + left + 'px;');
+
+                    if (Math.sqrt(((top - egor_y) * (top - egor_y) + (left - egor_x) * (left - egor_x))) < 50) {
+                        die();
+                    }
                 }
 
                 $(".background").attr("style", "top: " + (((max_y - egor_y) / max_y - 1) * 4) + "vh; left: " + (((max_x - egor_x) / max_x - 1) * 4) + "vw;")
             }, 1000 / fps);
 
-            setInterval(function() {
+            enemy_interval = setInterval(function() {
                 if ($(".screen > .enemy").length < max_enemy_amount) {
                     addEnemy(
                         ['foxford', 'lizobakt', 'foxford', 'srja', 'lizobakt', 'srja'][Math.floor(Math.random() * 6)],
@@ -257,6 +273,22 @@
                 }
                 // $('.score').html(score + " (" + $(".screen > .enemy").length + ")");
             }, 500);
+        }
+
+        function die() {
+            clearInterval(main_interval);
+            clearInterval(enemy_interval);
+
+            for (let i = 0; i < $(".screen > .enemy").length; i++) {
+                let obj = $(".screen > .enemy").eq(i);
+                obj.remove();
+                i--;
+            }
+
+            $(".input_area_title").html("Тебя кокнули");
+
+            $(".screen.menu").removeClass('hide');
+            $(".screen.game").addClass('hide');
         }
     </script>
 </body>

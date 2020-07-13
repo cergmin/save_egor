@@ -97,6 +97,8 @@
     width: 100vw;
     height: 100vh;
     position: absolute;
+    opacity: 1;
+    transition: opacity 0.2s ease-out;
 }
 
 .screen .score {
@@ -110,6 +112,14 @@
     position: absolute;
     z-index: 100;
     user-select: none;
+}
+
+.screen.game.hide {
+    opacity: 0;
+}
+
+.screen.menu {
+    z-index: 50;
 }
 
 .egor {
@@ -186,13 +196,14 @@
     display: block;
     position: absolute;
     transition: transform 0.2s ease-out;
+    box-shadow: 1px 1px 0px #00a, 2px 2px 0px #008, 3px 3px 0px #006, 4px 4px 0px #004, 5px 5px 0px #002, 6px 6px 0px #000;
 }
 
-.rank_table.hidden {
+.screen.hide .rank_table {
     transform: translateX(-700px);
 }
 
-.rank_table.hidden::after {
+.screen.hide .rank_table::after {
     transform: rotate(0deg);
 }
 
@@ -223,6 +234,11 @@
     padding: 100px 0;
     position: absolute;
     box-sizing: border-box;
+    transition: transform 0.2s ease-out;
+}
+
+.screen.hide .input_area {
+    transform: translateX(calc(100vw - 700px));
 }
 
 .input_area h1 {
