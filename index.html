@@ -2,12 +2,14 @@
 
 <head>
     <title>Please, save Egor</title>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="./resources/styles.css">
 </head>
 
 <body>
     <div class="background" style="top: 0vh; left: -2vw;"></div>
     <div class="screen">
+        <h1 class="score">0</h1>
         <div class="egor" style="top: 0px; left: 0px;"></div>
     </div>
     <script src="resources/jquery.min.js"></script>
@@ -40,6 +42,7 @@
             './resources/images/serg4.png',
         ];
 
+        let score = 0;
         let egor_x = ($(document).width() - $(".egor").width()) / 2;
         let egor_y = 0;
         let egor_x_delta = 0;
@@ -154,6 +157,9 @@
                     egor_x,
                     egor_y,
                     200);
+
+                score++;
+                $('.score').html(score);
             }
         }, 500);
     </script>

@@ -93,6 +93,18 @@
     position: absolute;
 }
 
+.screen .score {
+    top: 20px;
+    color: #fff;
+    width: 100vw;
+    font-family: 'Press Start 2P', cursive;
+    font-size: 5em;
+    text-align: center;
+    text-shadow: 2px 2px 0px #00a, 4px 4px 0px #005, 6px 6px 0px #000;
+    position: absolute;
+    z-index: 100;
+}
+
 .egor {
     animation-name: egor_up;
     animation-duration: 0.2s;
