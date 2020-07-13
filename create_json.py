@@ -1,4 +1,5 @@
 import json
+import hashlib
 
 
 with open('rank.json', 'r') as f:
@@ -27,3 +28,6 @@ db.append({
 
 with open('rank.json', 'a') as f:
 	json.dump(db, f)
+
+
+hashlib.sha1(b'save_egor' + str(len(db)) + str(name) + str(request.environ.get('HTTP_X_REAL_IP', request.remote_addr))).hexdigest()
