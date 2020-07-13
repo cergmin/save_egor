@@ -9,9 +9,6 @@
     <div class="background" style="top: 0vh; left: -2vw;"></div>
     <div class="screen">
         <div class="egor" style="top: 0px; left: 0px;"></div>
-        <div class="enemy right"></div>
-        <div class="enemy foxford right" style="top: 200px"></div>
-        <div class="enemy notgay right" style="top: 400px"></div>
     </div>
     <script src="resources/jquery.min.js"></script>
     <script>
@@ -21,11 +18,38 @@
         let max_x = $(document).width() - 100;
         let min_y = -10;
         let max_y = $(document).height() - 130;
+        let preload = heroArray = [
+            './resources/images/egor_up.png',
+            './resources/images/egor_up2.png',
+            './resources/images/egor_up3.png',
+            './resources/images/egor_walk.png',
+            './resources/images/egor_walk2.png',
+            './resources/images/egor_walk3.png',
+            './resources/images/lizab1.png',
+            './resources/images/lizab2.png',
+            './resources/images/lizab3.png',
+            './resources/images/lizab4.png',
+            './resources/images/lizaw1.png',
+            './resources/images/lizaw2.png',
+            './resources/images/lizaw3.png',
+            './resources/images/lizaw4.png',
+            './resources/images/serg1.png',
+            './resources/images/serg2.png',
+            './resources/images/serg3.png',
+            './resources/images/serg4.png',
+        ];
 
         let egor_x = ($(document).width() - $(".egor").width()) / 2;
         let egor_y = 0;
         let egor_x_delta = 0;
         let egor_y_delta = 0;
+
+        $(window).on('load', function() {
+            preload.forEach(function(resource) {
+                let img = new Image();
+                img.src = resource;
+            });
+        });
 
         $(document).on('keydown', function(e) {
             if (e.which == 38) {
@@ -50,6 +74,23 @@
                 egor_x_delta = 0;
             }
         });
+
+        function addEnemy(name, height, side, x, y, speed) {
+            if (side) {
+                side = $(window).width() + 115;
+            } else {
+                side = -115;
+            }
+
+            let dist = Math.sqrt((y - height) * (y - height) + (x - side) * (x - side));
+            x = (x - side) / dist * speed;
+            y = (y - height) / dist * speed;
+
+            $(".screen").append('<div class="enemy ' + name + ' ' + (side < 0 ? 'right' : '') + '" style="' +
+                'top:' + height + 'px;' +
+                'left:' + side + 'px;' +
+                '" speedx="' + x + '" speedy="' + y + '"></div>')
+        }
 
         setInterval(function() {
             if (egor_x_delta != 0 && egor_y_delta != 0) {
@@ -81,8 +122,25 @@
                 $(".egor").attr("class", "egor");
             }
 
+            for (let i = 0; i < $(".screen > .enemy").length; i++) {
+                let obj = $(".screen > .enemy").eq(i);
+                let top = parseFloat(obj.css('top').substr(0, obj.css('top').length - 2)) + obj.attr("speedy") / fps;
+                let left = parseFloat(obj.css('left').substr(0, obj.css('left').length - 2)) + obj.attr("speedx") / fps;
+
+                if ((top < -120) || (top > $(window).height() + 120) || (left < -120) || (left > $(window).width() + 120)) {
+                    obj.remove();
+                    i--;
+                    continue;
+                }
+                obj.attr("style", 'top:' + top + 'px;' + 'left:' + left + 'px;');
+            }
+
             $(".background").attr("style", "top: " + (((max_y - egor_y) / max_y - 1) * 4) + "vh; left: " + (((max_x - egor_x) / max_x - 1) * 4) + "vw;")
         }, 1000 / fps);
+
+        setInterval(function() {
+            addEnemy(['foxford', 'lizobakt', 'srja', 'foxford', 'lizobakt', 'srja'][Math.floor(Math.random() * 6)], Math.round(Math.random() * $(window).height()), Math.round(Math.random()), egor_x, egor_y, 200);
+        }, 1000);
     </script>
 </body>
 

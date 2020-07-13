@@ -52,7 +52,7 @@
     }
 }
 
-@keyframes notgay {
+@keyframes srja {
     0% {
         background-image: url('./images/serg1.png');
     }
@@ -147,7 +147,7 @@
     background-image: url('./images/lizaw1.png');
 }
 
-.enemy.notgay {
-    animation-name: notgay;
-    background-image: url('./images/lizaw1.png');
+.enemy.srja {
+    animation-name: srja;
+    background-image: url('./images/serg1.png');
 }
