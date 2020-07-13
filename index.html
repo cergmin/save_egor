@@ -37,6 +37,7 @@
         let max_x = $(document).width() - 100;
         let min_y = -10;
         let max_y = $(document).height() - 130;
+        let condemnation_period = 3;
         let preload = heroArray = [
             './resources/images/egor_up.png',
             './resources/images/egor_up2.png',
@@ -70,7 +71,7 @@
         let egor_y = 0;
         let egor_x_delta = 0;
         let egor_y_delta = 0;
-
+        let condemnation_counter = condemnation_period;
 
         let main_interval, enemy_interval;
 
@@ -291,7 +292,12 @@
             back_music.pause();
             back_music.currentTime = 0;
             death_sound.play();
-            condemnation_sound.play();
+
+            condemnation_counter++;
+            if (condemnation_counter >= condemnation_period) {
+                condemnation_sound.play();
+                condemnation_counter = 0;
+            }
 
             for (let i = 0; i < $(".screen > .enemy").length; i++) {
                 let obj = $(".screen > .enemy").eq(i);
