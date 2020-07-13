@@ -63,6 +63,7 @@
         let death_sound = new Audio('./resources/music/hitt1.mp3');
 
         let name = '';
+        let user_ip = '';
         let score = 0;
         let egor_speed = egor_start_speed;
         let egor_x = ($(document).width() - $(".egor").width()) / 2;
@@ -133,8 +134,8 @@
                     url: "https://cergmin.pythonanywhere.com/add/" +
                         name + "/" + data_with_ip.ip + "/" + score,
                     success: function(data) {
-                        data = JSON.parse(data);
                         console.log(data);
+                        reloadRankTable();
                     }
                 });
             });
@@ -182,6 +183,9 @@
         function start() {
             if ($(".name").val().length > 0) {
                 $.getJSON('https://json.geoiplookup.io/api?callback=?', function(data_with_ip) {
+
+                    user_ip = data_with_ip.ip;
+
                     $.ajax({
                         url: "https://cergmin.pythonanywhere.com/get_ip/" + $(".name").val(),
                         success: function(data) {
@@ -303,6 +307,8 @@
 
             $(".screen.menu").removeClass('hide');
             $(".screen.game").addClass('hide');
+
+            addScore(name, score);
         }
     </script>
 </body>
