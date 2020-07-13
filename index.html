@@ -180,7 +180,7 @@
         function addScore(name, score) {
             $.getJSON('https://json.geoiplookup.io/api?callback=?', function(data_with_ip) {
                 $.ajax({
-                    url: "http://cergmin.pythonanywhere.com/add",
+                    url: "https://cergmin.pythonanywhere.com/add",
                     method: 'POST',
                     data: {
                         'name': name,
