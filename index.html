@@ -37,7 +37,7 @@
         let max_x = $(document).width() - 100;
         let min_y = -10;
         let max_y = $(document).height() - 130;
-        let condemnation_period = 3;
+        let condemnation_period = 1;
         let preload = heroArray = [
             './resources/images/egor_up.png',
             './resources/images/egor_up2.png',
@@ -62,7 +62,13 @@
         back_music.loop = true;
 
         let death_sound = new Audio('./resources/music/hitt1.mp3');
-        let condemnation_sound = new Audio('./resources/music/condemnation.mp3');
+        let current_condemnation = 0;
+        let condemnations = [
+            new Audio('./resources/music/no0.mp3'),
+            new Audio('./resources/music/no1.mp3'),
+            new Audio('./resources/music/no2.mp3'),
+            new Audio('./resources/music/no3.mp3')
+        ];
 
         let name = '';
         let score = 0;
@@ -234,8 +240,8 @@
             back_music.play();
             death_sound.pause();
             death_sound.currentTime = 0;
-            condemnation_sound.pause();
-            condemnation_sound.currentTime = 0;
+            condemnations[current_condemnation].pause();
+            condemnations[current_condemnation].currentTime = 0;
 
             reloadRankTable();
             main_interval = setInterval(function() {
@@ -319,7 +325,11 @@
 
             condemnation_counter++;
             if (condemnation_counter >= condemnation_period) {
-                condemnation_sound.play();
+                current_condemnation++;
+                if (current_condemnation > condemnations.length - 1) {
+                    current_condemnation = 0;
+                }
+                condemnations[current_condemnation].play();
                 condemnation_counter = 0;
             }
 
