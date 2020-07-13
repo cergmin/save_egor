@@ -80,6 +80,7 @@
     margin: 0;
     padding: 0;
     overflow: hidden;
+    font-family: sans-serif;
 }
 
 .background {
@@ -164,4 +165,113 @@
 .enemy.srja {
     animation-name: srja;
     background-image: url('./images/serg1.png');
+}
+
+.rank_table {
+    background-color: #4f2edd;
+    width: 500px;
+    height: 100vh;
+    overflow: visible;
+    transition: transform 0.2s ease-out;
+}
+
+.rank_table::after {
+    content: '';
+    background-color: #4f2edd;
+    top: -200px;
+    left: 220px;
+    width: 299px;
+    height: calc(100vh + 1000px);
+    transform: rotate(10deg);
+    display: block;
+    position: absolute;
+    transition: transform 0.2s ease-out;
+}
+
+.rank_table.hidden {
+    transform: translateX(-700px);
+}
+
+.rank_table.hidden::after {
+    transform: rotate(0deg);
+}
+
+.ranks {
+    /* background-color: #fff; */
+    color: #fff;
+    text-align: center;
+    width: 460px;
+    /* height: calc(100vh - 40px); */
+    top: 20px;
+    left: 20px;
+    border-collapse: collapse;
+    position: absolute;
+    z-index: 10;
+}
+
+.ranks td {
+    border: 2px solid #fff;
+    padding: 10px 0;
+    box-sizing: border-box;
+}
+
+.input_area {
+    width: calc(100vw - 650px);
+    height: 100vh;
+    top: 0;
+    right: 0;
+    padding: 100px 0;
+    position: absolute;
+    box-sizing: border-box;
+}
+
+.input_area h1 {
+    color: #fff;
+    width: auto;
+    height: fit-content;
+    font-family: 'Press Start 2P', cursive;
+    font-size: 51px;
+    text-align: center;
+    text-shadow: 1px 1px 0px #00e, 2px 2px 0px #00c, 3px 3px 0px #009, 4px 4px 0px #006, 5px 5px 0px #003, 6px 6px 0px #000;
+    z-index: 100;
+    user-select: none;
+    overflow: visible;
+}
+
+.input_area .name {
+    background-color: #fff;
+    width: 60%;
+    max-width: 400px;
+    height: 50px;
+    margin: 0 auto;
+    padding: 2px 10px 0;
+    left: 0;
+    right: 0;
+    top: 250px;
+    font-size: 20px;
+    position: absolute;
+    outline: none;
+    border: none;
+    box-sizing: border-box;
+    box-shadow: 1px 1px 0px #00e, 2px 2px 0px #00c, 3px 3px 0px #009, 4px 4px 0px #006, 5px 5px 0px #003, 6px 6px 0px #000;
+}
+
+.start_btn {
+    background-color: #4f2edd;
+    color: #fff;
+    text-align: center;
+    width: 60%;
+    max-width: 200px;
+    height: 50px;
+    margin: 0 auto;
+    padding: 16px 10px 0;
+    left: 0;
+    right: 0;
+    top: 350px;
+    font-family: 'Press Start 2P', cursive;
+    font-size: 20px;
+    position: absolute;
+    box-sizing: border-box;
+    box-shadow: 1px 1px 0px #00e, 2px 2px 0px #00c, 3px 3px 0px #009, 4px 4px 0px #006, 5px 5px 0px #003, 6px 6px 0px #000;
+    cursor: pointer;
 }

@@ -7,7 +7,83 @@
 
 <body>
     <div class="background" style="top: 0vh; left: -2vw;"></div>
-    <div class="screen">
+    <div class="screen menu">
+        <div class="rank_table">
+            <table class="ranks">
+                <tr style="background-color: #fff; color: #000; font-weight: bold;">
+                    <td>#</td>
+                    <td>Имя</td>
+                    <td>Очки</td>
+                </tr>
+                <tr>
+                    <td>1</td>
+                    <td>cergmin</td>
+                    <td>300</td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>cergmin</td>
+                    <td>300</td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td>cergmin</td>
+                    <td>300</td>
+                </tr>
+                <tr>
+                    <td>4</td>
+                    <td>cergmin</td>
+                    <td>300</td>
+                </tr>
+                <tr>
+                    <td>5</td>
+                    <td>cergmin</td>
+                    <td>300</td>
+                </tr>
+                <tr>
+                    <td>6</td>
+                    <td>cergmin</td>
+                    <td>300</td>
+                </tr>
+                <tr>
+                    <td>7</td>
+                    <td>cergmin</td>
+                    <td>300</td>
+                </tr>
+                <tr>
+                    <td>8</td>
+                    <td>cergmin</td>
+                    <td>300</td>
+                </tr>
+                <tr>
+                    <td>9</td>
+                    <td>cergmin</td>
+                    <td>300</td>
+                </tr>
+                <tr>
+                    <td>10</td>
+                    <td>cergmin</td>
+                    <td>300</td>
+                </tr>
+                <tr>
+                    <td>...</td>
+                    <td>...</td>
+                    <td>...</td>
+                </tr>
+                <tr style="background-color: #cd4040;">
+                    <td>28</td>
+                    <td>you</td>
+                    <td>2</td>
+                </tr>
+            </table>
+        </div>
+        <div class="input_area">
+            <h1>Спаси Егорку!</h1>
+            <input class="name" type="text" placeholder="Имя">
+            <div class="start_btn">Начать</div>
+        </div>
+    </div>
+    <div class="screen game" style="display: none;">
         <h1 class="score">0</h1>
         <div class="egor" style="top: 0px; left: 0px;"></div>
     </div>
@@ -118,68 +194,70 @@
             });
         }
 
-        setInterval(function() {
-            if (egor_x_delta != 0 && egor_y_delta != 0) {
-                if ((egor_x_delta < 0 && egor_x > min_x) || (egor_x_delta > 0 && egor_x < max_x)) {
-                    egor_x += egor_x_delta * egor_speed / fps / Math.sqrt(2);
+        function start() {
+            setInterval(function() {
+                if (egor_x_delta != 0 && egor_y_delta != 0) {
+                    if ((egor_x_delta < 0 && egor_x > min_x) || (egor_x_delta > 0 && egor_x < max_x)) {
+                        egor_x += egor_x_delta * egor_speed / fps / Math.sqrt(2);
+                    }
+                    if ((egor_y_delta < 0 && egor_y > min_y) || (egor_y_delta > 0 && egor_y < max_y)) {
+                        egor_y += egor_y_delta * egor_speed / fps / Math.sqrt(2);
+                    }
+                } else {
+                    if ((egor_x_delta < 0 && egor_x > min_x) || (egor_x_delta > 0 && egor_x < max_x)) {
+                        egor_x += egor_x_delta * egor_speed / fps;
+                    }
+                    if ((egor_y_delta < 0 && egor_y > min_y) || (egor_y_delta > 0 && egor_y < max_y)) {
+                        egor_y += egor_y_delta * egor_speed / fps;
+                    }
                 }
-                if ((egor_y_delta < 0 && egor_y > min_y) || (egor_y_delta > 0 && egor_y < max_y)) {
-                    egor_y += egor_y_delta * egor_speed / fps / Math.sqrt(2);
+
+                $(".egor").attr("style", "top: " + egor_y + "px; left: " + egor_x + "px;");
+                if (egor_x_delta < 0) {
+                    $(".egor").attr("class", "egor left");
+                } else if (egor_x_delta > 0) {
+                    $(".egor").attr("class", "egor right");
+                } else if (egor_y_delta > 0) {
+                    $(".egor").attr("class", "egor down");
+                } else if (egor_y_delta < 0) {
+                    $(".egor").attr("class", "egor up");
+                } else {
+                    $(".egor").attr("class", "egor");
                 }
-            } else {
-                if ((egor_x_delta < 0 && egor_x > min_x) || (egor_x_delta > 0 && egor_x < max_x)) {
-                    egor_x += egor_x_delta * egor_speed / fps;
+
+                for (let i = 0; i < $(".screen > .enemy").length; i++) {
+                    let obj = $(".screen > .enemy").eq(i);
+                    let top = parseFloat(obj.css('top').substr(0, obj.css('top').length - 2)) + obj.attr("speedy") / fps;
+                    let left = parseFloat(obj.css('left').substr(0, obj.css('left').length - 2)) + obj.attr("speedx") / fps;
+
+                    if ((top < -120) || (top > $(window).height() + 120) || (left < -120) || (left > $(window).width() + 120)) {
+                        obj.remove();
+                        i--;
+                        continue;
+                    }
+                    obj.attr("style", 'transform: ' + obj.css('transform') + ';top:' + top + 'px;' + 'left:' + left + 'px;');
                 }
-                if ((egor_y_delta < 0 && egor_y > min_y) || (egor_y_delta > 0 && egor_y < max_y)) {
-                    egor_y += egor_y_delta * egor_speed / fps;
+
+                $(".background").attr("style", "top: " + (((max_y - egor_y) / max_y - 1) * 4) + "vh; left: " + (((max_x - egor_x) / max_x - 1) * 4) + "vw;")
+            }, 1000 / fps);
+
+            setInterval(function() {
+                if ($(".screen > .enemy").length < max_enemy_amount) {
+                    addEnemy(
+                        ['foxford', 'lizobakt', 'foxford', 'srja', 'lizobakt', 'srja'][Math.floor(Math.random() * 6)],
+                        Math.round(Math.random() * $(window).height()),
+                        Math.round(Math.random()),
+                        egor_x + Math.random() * 500 - 250,
+                        egor_y + Math.random() * 500 - 250,
+                        enemy_start_speed + score * 2);
+                    egor_speed = egor_start_speed + score;
+
+                    score++;
+                    $('.score').html(score);
                 }
-            }
-
-            $(".egor").attr("style", "top: " + egor_y + "px; left: " + egor_x + "px;");
-            if (egor_x_delta < 0) {
-                $(".egor").attr("class", "egor left");
-            } else if (egor_x_delta > 0) {
-                $(".egor").attr("class", "egor right");
-            } else if (egor_y_delta > 0) {
-                $(".egor").attr("class", "egor down");
-            } else if (egor_y_delta < 0) {
-                $(".egor").attr("class", "egor up");
-            } else {
-                $(".egor").attr("class", "egor");
-            }
-
-            for (let i = 0; i < $(".screen > .enemy").length; i++) {
-                let obj = $(".screen > .enemy").eq(i);
-                let top = parseFloat(obj.css('top').substr(0, obj.css('top').length - 2)) + obj.attr("speedy") / fps;
-                let left = parseFloat(obj.css('left').substr(0, obj.css('left').length - 2)) + obj.attr("speedx") / fps;
-
-                if ((top < -120) || (top > $(window).height() + 120) || (left < -120) || (left > $(window).width() + 120)) {
-                    obj.remove();
-                    i--;
-                    continue;
-                }
-                obj.attr("style", 'transform: ' + obj.css('transform') + ';top:' + top + 'px;' + 'left:' + left + 'px;');
-            }
-
-            $(".background").attr("style", "top: " + (((max_y - egor_y) / max_y - 1) * 4) + "vh; left: " + (((max_x - egor_x) / max_x - 1) * 4) + "vw;")
-        }, 1000 / fps);
-
-        setInterval(function() {
-            if ($(".screen > .enemy").length < max_enemy_amount) {
-                addEnemy(
-                    ['foxford', 'lizobakt', 'foxford', 'srja', 'lizobakt', 'srja'][Math.floor(Math.random() * 6)],
-                    Math.round(Math.random() * $(window).height()),
-                    Math.round(Math.random()),
-                    egor_x + Math.random() * 500 - 250,
-                    egor_y + Math.random() * 500 - 250,
-                    enemy_start_speed + score * 2);
-                egor_speed = egor_start_speed + score;
-
-                score++;
-                $('.score').html(score);
-            }
-            // $('.score').html(score + " (" + $(".screen > .enemy").length + ")");
-        }, 500);
+                // $('.score').html(score + " (" + $(".screen > .enemy").length + ")");
+            }, 500);
+        }
     </script>
 </body>
 
