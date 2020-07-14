@@ -183,6 +183,7 @@
     height: 100vh;
     overflow: visible;
     transition: transform 0.2s ease-out;
+    box-shadow: 1px 1px 0px #00a, 2px 2px 0px #008, 3px 3px 0px #006, 4px 4px 0px #004, 5px 5px 0px #002, 6px 6px 0px #000;
 }
 
 .rank_table::after {
@@ -195,7 +196,6 @@
     transform: rotate(10deg);
     display: block;
     position: absolute;
-    transition: transform 0.2s ease-out;
     box-shadow: 1px 1px 0px #00a, 2px 2px 0px #008, 3px 3px 0px #006, 4px 4px 0px #004, 5px 5px 0px #002, 6px 6px 0px #000;
 }
 
@@ -234,11 +234,10 @@
     padding: 100px 0;
     position: absolute;
     box-sizing: border-box;
-    transition: transform 0.2s ease-out;
 }
 
 .screen.hide .input_area {
-    transform: translateX(calc(100vw - 700px));
+    display: none;
 }
 
 .input_area h1 {
@@ -302,4 +301,29 @@
     left: 12px;
     top: 356px;
     box-shadow: none;
+}
+
+@media (max-width: 1160px) {
+    .screen .rank_table::after {
+        transform: rotate(0deg) translateX(-19px);
+        box-shadow: none;
+    }
+    .input_area {
+        width: calc(100vw - 500px);
+    }
+}
+
+@media (max-width: 1020px) {
+    .screen .rank_table:after {
+        transform: rotate(0deg) translateX(-100vw);
+    }
+    .screen .rank_table {
+        width: 400px;
+    }
+    .ranks {
+        width: 360px;
+    }
+    .input_area {
+        width: calc(100vw - 400px);
+    }
 }

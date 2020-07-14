@@ -1,6 +1,7 @@
 <html>
 
 <head>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
     <title>Please, save Egor</title>
     <link rel="stylesheet" href="./resources/styles.css">
 </head>
@@ -60,8 +61,10 @@
         ];
         let back_music = new Audio('./resources/music/music.mp3');
         back_music.loop = true;
+		back_music.volume = 0.2;
 
         let death_sound = new Audio('./resources/music/hitt1.mp3');
+		death_sound.volume = 0.75;
         let current_condemnation = 0;
         let condemnations = [
             new Audio('./resources/music/no0.mp3'),
@@ -329,6 +332,7 @@
                 if (current_condemnation > condemnations.length - 1) {
                     current_condemnation = 0;
                 }
+                condemnations[current_condemnation].volume = 0.2;
                 condemnations[current_condemnation].play();
                 condemnation_counter = 0;
             }
