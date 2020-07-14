@@ -193,7 +193,7 @@
 		setInterval(reloadRankTable, 5000);
 
 		function run_random_event() {
-			event = Math.min(4, Math.round(Math.random() * 3) + 1);
+			event = Math.min(5, Math.round(Math.random() * 4) + 1);
 
 			if(event == last_event || event == 3){
 				event = Math.min(4, Math.round(Math.random() * 4) + 1);
@@ -225,6 +225,11 @@
 			}
 			else if(event == 4){
 				$("body").css('transform', 'rotate(10deg)');
+				$("body").css('filter', 'blur(0px)');
+			}
+			else if(event == 5){
+				$("body").css('transform', 'scale(1.1)');
+				$("body").css('filter', 'blur(15px)');
 			}
 		}
 
@@ -257,6 +262,7 @@
 			event = 0;
 			$(".red_area_center").addClass('hide');
 			$("body").css('transform', 'rotate(0deg)');
+			$("body").css('filter', 'blur(0px)');
 			clearInterval(event_interval);
 			for (let i = 0; i < $(".screen > .enemy").length; i++) {
 				let obj = $(".screen > .enemy").eq(i);
@@ -357,6 +363,7 @@
 						event = 0;
 						$(".red_area_center").addClass('hide');
 						$("body").css('transform', 'rotate(0deg)');
+						$("body").css('filter', 'blur(0px)');
 						clearInterval(event_interval);
 					}
 					// $('.score').html(score + " (" + event + ")");
@@ -373,6 +380,7 @@
 
 			$(".red_area_center").addClass('hide');
 			$("body").css('transform', 'rotate(0deg)');
+			$("body").css('filter', 'blur(0px)');
 
 			back_music.pause();
 			back_music.currentTime = 0;
