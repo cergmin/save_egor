@@ -5,7 +5,6 @@
     <title>Please, save Egor</title>
     <link rel="stylesheet" href="./resources/styles.css">
 </head>
-
 <body>
     <div class="background" style="top: 0vh; left: -2vw;"></div>
     <div class="screen menu">
@@ -29,6 +28,7 @@
         <div class="egor" style="top: 0px; left: 0px;"></div>
     </div>
     <script src="resources/jquery.min.js"></script>
+    <script src="resources/jquery.cookie.js"></script>
     <script>
         let fps = 60;
         let max_enemy_amount = 20;
@@ -95,25 +95,25 @@
         });
 
         $(document).on('keydown', function(e) {
-            if (e.which == 38) {
+            if (e.which == 38 || e.which == 87) {
                 egor_y_delta = -1;
-            } else if (e.which == 40) {
+            } else if (e.which == 40 || e.which == 83) {
                 egor_y_delta = 1;
-            } else if (e.which == 37) {
+            } else if (e.which == 37 || e.which == 65) {
                 egor_x_delta = -1;
-            } else if (e.which == 39) {
+            } else if (e.which == 39 || e.which == 68) {
                 egor_x_delta = 1;
             }
         });
 
         $(document).on('keyup', function(e) {
-            if ((e.which == 38 && egor_y_delta < 0) ||
-                (e.which == 40 && egor_y_delta > 0)) {
+            if (((e.which == 38 || e.which == 87) && egor_y_delta < 0) ||
+                ((e.which == 40 || e.which == 83) && egor_y_delta > 0)) {
                 egor_y_delta = 0;
             }
 
-            if ((e.which == 37 && egor_x_delta < 0) ||
-                (e.which == 39 && egor_x_delta > 0)) {
+            if (((e.which == 37 || e.which == 65) && egor_x_delta < 0) ||
+                ((e.which == 39 || e.which == 68) && egor_x_delta > 0)) {
                 egor_x_delta = 0;
             }
         });
