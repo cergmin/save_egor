@@ -72,15 +72,16 @@
     }
 }
 
-:root {
-    --scale: 1;
-}
-
 * {
     margin: 0;
     padding: 0;
     overflow: hidden;
     font-family: sans-serif;
+}
+
+body{
+    transform: rotate(0deg);
+    transition: transform ease-out 0.2s;
 }
 
 .background {
@@ -129,8 +130,8 @@
     animation-direction: alternate;
     background-image: url('./images/egor_up.png');
     background-size: contain;
-    width: calc(90px * var(--scale));
-    height: calc(150px * var(--scale));
+    width: 90px;
+    height: 150px;
     position: absolute;
 }
 
@@ -162,8 +163,8 @@
     animation-direction: alternate;
     background-image: url('./images/lizab1.png');
     background-size: contain;
-    width: calc(115px * var(--scale));
-    height: calc(150px * var(--scale));
+    width: 115px;
+    height: 150px;
     position: absolute;
 }
 
@@ -175,6 +176,20 @@
 .enemy.srja {
     animation-name: srja;
     background-image: url('./images/serg1.png');
+}
+
+.red_area_center{
+    background-color: red;
+    width: 100vw;
+    height: 120px;
+    left: 0;
+    top: 0;
+    position: absolute;
+    opacity: 0.5;
+    transition: opacity ease-out 0.2s;
+}
+.red_area_center.hide{
+    opacity: 0;
 }
 
 .rank_table {
